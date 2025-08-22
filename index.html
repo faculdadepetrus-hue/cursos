@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="FAPETRUS - Graduação e Pós-Graduação com contato direto pelo WhatsApp.">
+    <title>Link da Bio - FAPETRUS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .category-card:hover { transform: scale(1.02); }
+        .category-card { transition: all 0.3s ease; }
+        .accordion-content { transition: max-height 0.4s ease-out; overflow: hidden; }
+        .accordion-icon { transition: transform 0.3s ease; }
+        .accordion-icon.open { transform: rotate(180deg); }
+        .fapetrus-red { background: #A73D46; }
+        .fapetrus-red-light { background: #C85A60; }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <div class="max-w-md mx-auto bg-white min-h-screen shadow-lg">
+        
+        <!-- Header -->
+        <div class="bg-gradient-to-r fapetrus-red fapetrus-red-light text-white p-6 text-center">
+            <h1 class="text-2xl font-bold mb-2">FAPETRUS</h1>
+            <p class="text-red-100 text-sm">Escolha seu curso e fale com a gente no WhatsApp</p>
+        </div>
+
+        <!-- Name Input -->
+        <div class="p-4 bg-white border-b">
+            <label class="block text-sm font-medium text-gray-700 mb-2">Seu Nome *</label>
+            <input 
+                type="text" 
+                id="userName" 
+                placeholder="Digite seu nome completo"
+                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 outline-none transition-colors"
+            >
+            <div id="nameWarning" class="hidden text-red-500 text-xs mt-1">
+                <i class="fas fa-exclamation-circle mr-1"></i>
+                Por favor, preencha seu nome para continuar
+            </div>
+        </div>
+
+        <!-- Search -->
+        <div class="p-4 bg-gray-50 border-b">
+            <div class="relative">
+                <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                <input 
+                    type="text" 
+                    id="searchInput" 
+                    placeholder="Buscar curso..."
+                    class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 outline-none"
+                >
+            </div>
+        </div>
+
+        <!-- Courses Container -->
+        <div id="coursesContainer" class="p-4 pb-4">
+            
+            <!-- Main Cards Grid -->
+            <div class="grid grid-cols-2 gap-3 mb-6">
+                
+                <!-- Pedagogia Card -->
+                <div class="category-card bg-gradient-to-br from-red-600 to-red-700 rounded-xl shadow-lg overflow-hidden">
+                    <button class="w-full text-left p-3" data-course="Pedagogia" onclick="openWhatsApp('Pedagogia')">
+                        <div class="text-center">
+                            <div class="bg-white bg-opacity-20 rounded-lg p-2 mb-2 mx-auto w-fit">
+                                <i class="fas fa-chalkboard-teacher text-white text-lg"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-sm font-bold text-white leading-tight">Pedagogia</h3>
+                                <p class="text-red-100 text-xs mt-1">Licenciatura</p>
+                            </div>
+                        </div>
+                    </button>
+                </div>
+
+                <!-- Serviço Social Card -->
+                <div class="category-card bg-gradient-to-br from-red-600 to-red-700 rounded-xl shadow-lg overflow-hidden">
+                    <button class="w-full text-left p-3" data-course="Serviço Social" onclick="openWhatsApp('Serviço Social')">
+                        <div class="text-center">
+                            <div class="bg-white bg-opacity-20 rounded-lg p-2 mb-2 mx-auto w-fit">
+                                <i class="fas fa-hands-helping text-white text-lg"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-sm font-bold text-white leading-tight">Serviço Social</h3>
+                                <p class="text-red-100 text-xs mt-1">Bacharelado</p>
+                            </div>
+                        </div>
+                    </button>
+                </div>
+
+                <!-- Pós-Graduação Main Card -->
+                <div class="category-card bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl shadow-lg overflow-hidden col-span-2">
+                    <button class="w-full text-white p-4 text-left hover:bg-black hover:bg-opacity-10 transition-all" onclick="toggleAccordion('posGrad')">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <div class="bg-white bg-opacity-20 rounded-lg p-2 mr-3">
+                                    <i class="fas fa-graduation-cap text-lg"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-lg font-bold">Pós-Graduação</h3>
+                                    <p class="text-blue-100 text-sm">Especializações em diversas áreas</p>
+                                    <span class="text-blue-100 text-xs">(<span id="totalPosCount">80+</span> cursos disponíveis)</span>
+                                </div>
+                            </div>
+                            <i class="fas fa-chevron-down accordion-icon text-lg" id="posGradIcon"></i>
+                        </div>
+                    </button>
+                    
+                    <div class="accordion-content bg-white bg-opacity-10" id="posGradContent" style="max-height: 0;">
+                        <div class="p-4">
+                            <!-- Subcategories Grid -->
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                
+                                <!-- Educação -->
+                                <div class="bg-blue-500 bg-opacity-80 rounded-lg p-3">
+                                    <button class="w-full text-left text-white" onclick="toggleAccordion('educacao')">
+                                        <div class="flex items-center justify-between">
+                                            <div>
+                                                <h4 class="font-semibold text-sm">📚 Educação</h4>
+                                                <p class="text-xs opacity-90">(<span id="educacaoCount">29</span> cursos)</p>
+                                            </div>
+                                            <i class="fas fa-chevron-down text-xs" id="educacaoIcon"></i>
+                                        </div>
+                                    </button>
+                                    <div class="accordion-content mt-2" id="educacaoContent" style="max-height: 0;">
+                                        <div class="space-y-1" id="educacaoCourses"></div>
+                                    </div>
+                                </div>
+
+                                <!-- Psicologia -->
+                                <div class="bg-purple-500 bg-opacity-80 rounded-lg p-3">
+                                    <button class="w-full text-left text-white" onclick="toggleAccordion('psicologia')">
+                                        <div class="flex items-center justify-between">
+                                            <div>
+                                                <h4 class="font-semibold text-sm">🧠 Psicologia</h4>
+                                                <p class="text-xs opacity-90">(<span id="psicologiaCount">15</span> cursos)</p>
+                                            </div>
+                                            <i class="fas fa-chevron-down text-xs" id="psicologiaIcon"></i>
+                                        </div>
+                                    </button>
+                                    <div class="accordion-content mt-2" id="psicologiaContent" style="max-height: 0;">
+                                        <div class="space-y-1" id="psicologiaCourses"></div>
+                                    </div>
+                                </div>
+
+                                <!-- Gestão -->
+                                <div class="bg-green-500 bg-opacity-80 rounded-lg p-3">
+                                    <button class="w-full text-left text-white" onclick="toggleAccordion('gestao')">
+                                        <div class="flex items-center justify-between">
+                                            <div>
+                                                <h4 class="font-semibold text-sm">📊 Gestão</h4>
+                                                <p class="text-xs opacity-90">(<span id="gestaoCount">15</span> cursos)</p>
+                                            </div>
+                                            <i class="fas fa-chevron-down text-xs" id="gestaoIcon"></i>
+                                        </div>
+                                    </button>
+                                    <div class="accordion-content mt-2 max-h-64 overflow-y-auto" id="gestaoContent" style="max-height: 0;">
+                                        <div class="space-y-1" id="gestaoCourses"></div>
+                                    </div>
+                                </div>
+
+                                <!-- Saúde -->
+                                <div class="bg-red-500 bg-opacity-80 rounded-lg p-3">
+                                    <button class="w-full text-left text-white" onclick="toggleAccordion('saude')">
+                                        <div class="flex items-center justify-between">
+                                            <div>
+                                                <h4 class="font-semibold text-sm">🏥 Saúde</h4>
+                                                <p class="text-xs opacity-90">(<span id="saudeCount">9</span> cursos)</p>
+                                            </div>
+                                            <i class="fas fa-chevron-down text-xs" id="saudeIcon"></i>
+                                        </div>
+                                    </button>
+                                    <div class="accordion-content mt-2 max-h-64 overflow-y-auto" id="saudeContent" style="max-height: 0;">
+                                        <div class="space-y-1" id="saudeCourses"></div>
+                                    </div>
+                                </div>
+
+                                <!-- Teologia -->
+                                <div class="bg-indigo-500 bg-opacity-80 rounded-lg p-3">
+                                    <button class="w-full text-left text-white" onclick="toggleAccordion('teologia')">
+                                        <div class="flex items-center justify-between">
+                                            <div>
+                                                <h4 class="font-semibold text-sm">✝️ Teologia</h4>
+                                                <p class="text-xs opacity-90">(<span id="teologiaCount">12</span> cursos)</p>
+                                            </div>
+                                            <i class="fas fa-chevron-down text-xs" id="teologiaIcon"></i>
+                                        </div>
+                                    </button>
+                                    <div class="accordion-content mt-2 max-h-64 overflow-y-auto" id="teologiaContent" style="max-height: 0;">
+                                        <div class="space-y-1" id="teologiaCourses"></div>
+                                    </div>
+                                </div>
+
+                                <!-- Serviço Social -->
+                                <div class="bg-orange-500 bg-opacity-80 rounded-lg p-3">
+                                    <button class="w-full text-left text-white" onclick="toggleAccordion('servico')">
+                                        <div class="flex items-center justify-between">
+                                            <div>
+                                                <h4 class="font-semibold text-sm">🤝 Serviço Social</h4>
+                                                <p class="text-xs opacity-90">(<span id="servicoCount">8</span> cursos)</p>
+                                            </div>
+                                            <i class="fas fa-chevron-down text-xs" id="servicoIcon"></i>
+                                        </div>
+                                    </button>
+                                    <div class="accordion-content mt-2 max-h-64 overflow-y-auto" id="servicoContent" style="max-height: 0;">
+                                        <div class="space-y-1" id="servicoCourses"></div>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+
+        <!-- Testimonials Section -->
+        <div class="bg-gray-50 py-6 px-4">
+            <div class="text-center mb-4">
+                <h2 class="text-lg font-bold text-gray-800 mb-2">O que nossos alunos dizem</h2>
+                <p class="text-sm text-gray-600">Depoimentos reais de quem transformou sua carreira</p>
+            </div>
+            
+            <!-- Simple testimonial -->
+            <div class="bg-gradient-to-r from-red-600 to-red-700 rounded-xl p-4 text-white text-center">
+                <div class="mb-2">⭐⭐⭐⭐⭐</div>
+                <p class="text-sm italic mb-3">"A FAPETRUS transformou minha vida profissional! Hoje sou coordenadora pedagógica."</p>
+                <div class="text-sm">
+                    <strong>Ana Paula Silva</strong><br>
+                    <span class="text-red-100">Pedagogia</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="bg-gray-800 text-white p-4">
+            <div class="text-center">
+                <div class="flex justify-center space-x-6 mb-3">
+                    <a href="https://www.facebook.com/FAPETRUS" target="_blank" class="text-gray-300 hover:text-white transition-colors">
+                        <i class="fab fa-facebook-f text-xl"></i>
+                    </a>
+                    <a href="https://www.instagram.com/fapetrus/" target="_blank" class="text-gray-300 hover:text-white transition-colors">
+                        <i class="fab fa-instagram text-xl"></i>
+                    </a>
+                    <a href="#" class="text-gray-300 hover:text-white transition-colors">
+                        <i class="fab fa-whatsapp text-xl"></i>
+                    </a>
+                    <a href="#" class="text-gray-300 hover:text-white transition-colors">
+                        <i class="fab fa-youtube text-xl"></i>
+                    </a>
+                </div>
+                <p class="text-sm text-gray-400">© 2024 FAPETRUS - Todos os direitos reservados</p>
+            </div>
+        </footer>
+
+    </div>
+
+    <script>
+        // Cursos organizados por categoria
+        const courseCategories = {
+            educacao: [
+                "Alfabetização e Letramento",
+                "Atendimento Educacional Especializado", 
+                "Coordenação Pedagógica",
+                "Docência da Educação Infantil e dos Anos Iniciais",
+                "Docência no Ensino Superior",
+                "Educação de Jovens e Adultos",
+                "Educação Especial",
+                "Educação Especial com Ênfase em TGD",
+                "Educação Especial e Neuropsicopedagogia",
+                "Educação Física Escolar",
+                "Educação Inclusiva",
+                "Educação Inclusiva com Ênfase nas Deficiências Múltiplas",
+                "Educação Infantil",
+                "Educação Infantil com Ênfase na Ludoterapia",
+                "Educação Infantil e Ensino Fundamental",
+                "Educação no Campo, Indígena e Quilombola",
+                "Ensino Religioso",
+                "Gestão e Coordenação Pedagógica",
+                "Gestão e Docência Superior",
+                "Gestão Escolar",
+                "Gestão, Orientação e Coordenação Escolar",
+                "Gestão, Supervisão e Orientação Educacional",
+                "Metodologia e Recursos do Ensino Híbrido",
+                "Pedagogia Empresarial e Corporativa",
+                "Pedagogia Social",
+                "Planejamento Educacional e Políticas Públicas",
+                "Secretaria Escolar",
+                "Superdotação e Altas Habilidades",
+                "Transtorno do Espectro Autista (TEA)"
+            ],
+            
+            psicologia: [
+                "Análise do Comportamento Aplicada",
+                "Arteterapia",
+                "Ludopedagogia",
+                "Ludoterapia",
+                "Neurociência Aplicada à Educação",
+                "Neurolinguística",
+                "Neuropsicologia",
+                "Neuropsicologia Clínica",
+                "Neuropsicopedagogia Clínica",
+                "Neuropsicopedagogia Clínica e Institucional",
+                "Psicomotricidade",
+                "Psicopedagogia Clínica e Institucional",
+                "Psicopedagogia Escolar e Institucional",
+                "Psicoterapia Psicanalítica",
+                "Terapia Cognitivo Comportamental"
+            ],
+            
+            gestao: [
+                "Administração Escolar",
+                "Controladoria e Finanças",
+                "Gerenciamento de Projetos",
+                "Gestão Cultural",
+                "Gestão de Marketing",
+                "Gestão de Pessoas e Coaching",
+                "Gestão de Pessoas e Recursos Humanos",
+                "Gestão de Recursos Humanos",
+                "Gestão e Estratégia de Negócios",
+                "Gestão em Políticas Públicas",
+                "Gestão Pública",
+                "Gestão e Saúde Pública",
+                "Formação de Lideranças",
+                "Informática e Comunicação em Educação",
+                "Tecnologia e Comunicação"
+            ],
+            
+            saude: [
+                "Enfermagem do Trabalho",
+                "Enfermagem e Gerontologia e Obstetrícia",
+                "Enfermagem em Pediatria e Neonatologia",
+                "Enfermagem em Urgência e Emergência",
+                "Enfermagem em UTI",
+                "Nutrição Clínica: Metabolismo, Prática e Terapia Nutricional",
+                "Nutrição e Exercício Aplicados à Prevenção e ao Tratamento de Doenças",
+                "Nutrição com Ênfase em Alimentação Escolar",
+                "Obesidade e Emagrecimento"
+            ],
+            
+            teologia: [
+                "Aconselhamento e Psicologia Pastoral",
+                "Ciências da Religião",
+                "Filosofia Contemporânea",
+                "Hermenêutica e Teologia Bíblica",
+                "História da Arte",
+                "História do Brasil",
+                "História e Cultura Afro-brasileira",
+                "Interpretação e Tradução em Libras",
+                "Libras e Braille",
+                "Língua Brasileira de Sinais (Libras)",
+                "Missiologia",
+                "Teologia Bíblica"
+            ],
+            
+            servico: [
+                "Elaboração e Avaliação de Políticas Públicas e Projetos Sociais",
+                "Fundamentos e Práticas Profissionais em Serviço Social",
+                "Políticas Públicas, Gestão e Serviço Social",
+                "Políticas Sociais e Gestão em Serviço Social",
+                "Proteção Integral à Criança e ao Adolescente",
+                "Serviço Social em Saúde Coletiva",
+                "Serviço Social, Ética e Direitos Humanos",
+                "Trabalho Social com Famílias e Comunidades e Violência Doméstica"
+            ]
+        };
+
+        // Initialize courses
+        function initializeCourses() {
+            Object.keys(courseCategories).forEach(category => {
+                const container = document.getElementById(category + 'Courses');
+                const countElement = document.getElementById(category + 'Count');
+                const courses = courseCategories[category];
+                
+                if (container) {
+                    container.innerHTML = '';
+                    
+                    courses.forEach(course => {
+                        const courseCard = document.createElement('div');
+                        courseCard.className = 'bg-white bg-opacity-20 rounded p-2 text-xs mb-1';
+                        courseCard.innerHTML = `
+                            <button class="w-full text-left text-white hover:bg-white hover:bg-opacity-10 p-1 rounded" 
+                                    data-course="${course}" onclick="openWhatsApp('${course}')">
+                                • ${course}
+                            </button>
+                        `;
+                        container.appendChild(courseCard);
+                    });
+                }
+                
+                if (countElement) {
+                    countElement.textContent = courses.length;
+                }
+            });
+        }
+
+        // Accordion functionality
+        function toggleAccordion(type) {
+            const content = document.getElementById(type + 'Content');
+            const icon = document.getElementById(type + 'Icon');
+            
+            if (content && icon) {
+                if (content.style.maxHeight === "0px" || content.style.maxHeight === "") {
+                    // Set a high max-height to ensure all content is visible
+                    content.style.maxHeight = "800px";
+                    icon.classList.add('open');
+                    
+                    // After transition, set to auto for dynamic content
+                    setTimeout(() => {
+                        if (content.style.maxHeight !== "0px") {
+                            content.style.maxHeight = "none";
+                        }
+                    }, 400);
+                } else {
+                    content.style.maxHeight = "0";
+                    icon.classList.remove('open');
+                }
+            }
+        }
+
+        // WhatsApp functionality
+        function openWhatsApp(courseName) {
+            const userName = document.getElementById('userName').value.trim();
+            const nameWarning = document.getElementById('nameWarning');
+            
+            if (!userName) {
+                nameWarning.classList.remove('hidden');
+                document.getElementById('userName').focus();
+                setTimeout(() => {
+                    nameWarning.classList.add('hidden');
+                }, 3000);
+                return;
+            }
+            
+            nameWarning.classList.add('hidden');
+            
+            const phoneNumber = "5511999999999"; // Substitua pelo número real
+            const message = `Olá! Meu nome é ${userName} e tenho interesse no curso de ${courseName}. Gostaria de mais informações sobre matrícula, valores e grade curricular.`;
+            const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+            
+            window.open(whatsappUrl, '_blank');
+        }
+
+        // Search functionality
+        document.getElementById('searchInput').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const courseButtons = document.querySelectorAll('[data-course]');
+            
+            courseButtons.forEach(button => {
+                const courseName = button.getAttribute('data-course').toLowerCase();
+                const courseCard = button.closest('.bg-white');
+                
+                if (courseCard) {
+                    if (courseName.includes(searchTerm)) {
+                        courseCard.style.display = 'block';
+                    } else {
+                        courseCard.style.display = 'none';
+                    }
+                }
+            });
+        });
+
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeCourses();
+        });
+    </script>
+</body>
+</html>
